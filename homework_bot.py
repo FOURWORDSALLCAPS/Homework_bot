@@ -31,13 +31,13 @@ def main():
 
     while True:
         try:
-            server_response = get_updates(api_token, timestamp)
-            new_attempts = server_response['new_attempts'][0]
-            lesson_url = new_attempts['lesson_url']
-            lesson_title = new_attempts['lesson_title']
-            if server_response.get("status") == "timeout":
-                timestamp = server_response.get("timestamp_to_request")
-            elif new_attempts['is_negative']:
+            review = get_updates(api_token, timestamp)
+            new_attempt = review['new_attempts'][0]
+            lesson_url = new_attempt['lesson_url']
+            lesson_title = new_attempt['lesson_title']
+            if review.get("status") == "timeout":
+                timestamp = review.get("timestamp_to_request")
+            elif new_attempt['is_negative']:
                 text = f'''
                     Название урока: {lesson_title}
                     Ссылка: {lesson_url}
