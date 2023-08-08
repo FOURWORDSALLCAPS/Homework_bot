@@ -1,6 +1,7 @@
 import time
 import telegram
 import requests
+from textwrap import dedent
 
 from environs import Env
 
@@ -30,18 +31,25 @@ def main():
 
     while True:
         try:
-            result = get_updates(api_token, timestamp)
-            lesson_url = result['new_attempts'][0]['lesson_url']
-            lesson_title = result['new_attempts'][0]['lesson_title']
-            if result.get("status") == "timeout":
-                timestamp = result.get("timestamp_to_request")
-            elif result['new_attempts'][0]['is_negative']:
-                bot.send_message(text=f'Название урока: {lesson_title}\nСсылка: {lesson_url}'
-                                      f'\nК сожалению, в работе нашлись ошибки!', chat_id=tg_chat_id)
+            server_response = get_updates(api_token, timestamp)
+            new_attempts = server_response['new_attempts'][0]
+            lesson_url = new_attempts['lesson_url']
+            lesson_title = new_attempts['lesson_title']
+            if server_response.get("status") == "timeout":
+                timestamp = server_response.get("timestamp_to_request")
+            elif new_attempts['is_negative']:
+                text = f'''
+                    Название урока: {lesson_title}
+                    Ссылка: {lesson_url}
+                    К сожалению, в работе нашлись ошибки!
+                    '''
+                bot.send_message(text=dedent(text), chat_id=tg_chat_id)
             else:
-                bot.send_message(text=f'Название урока: {lesson_title}\nСсылка: {lesson_url}'
-                                      f'\nПреподавателю всё понравилось, можно приступать к следующему уроку!',
-                                 chat_id=tg_chat_id)
+                text = f'''
+                    Название урока: {lesson_title}
+                    Ссылка: {lesson_url}
+                    Преподавателю всё понравилось, можно приступать к следующему уроку!'''
+                bot.send_message(text=dedent(text), chat_id=tg_chat_id)
         except requests.exceptions.ReadTimeout:
             pass
         except requests.exceptions.ConnectionError:
