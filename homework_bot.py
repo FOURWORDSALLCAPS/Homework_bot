@@ -67,8 +67,12 @@ def main():
         except requests.exceptions.ReadTimeout:
             pass
         except requests.exceptions.ConnectionError:
-            print('Соединение разорвано')
-            time.sleep(5)
+            exception = traceback.format_exc().splitlines()
+            bot.logger.warning(f'Бот упал с ошибкой: {exception[-1]}')
+            time.sleep(60)
+        except Exception:
+            exception = traceback.format_exc().splitlines()
+            bot.logger.warning(f'Бот упал с ошибкой: {exception[-1]}')
 
 
 if __name__ == '__main__':
