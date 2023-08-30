@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1
+
+FROM python:alpine
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip3 install -r requirements.txt
+
+EXPOSE 5050
+
+CMD ['python3', 'homework_bot.py']
