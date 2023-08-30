@@ -16,6 +16,18 @@ pip install -r requirements.txt
 python homework_bot.py
 ```
 
+## Docker
+
+- Установить [Docker](https://docs.docker.com/engine/install/)
+- Собрать контейнер
+```
+docker build -t homework_bot
+```
+ - Запустить контейнер
+```
+docker run -p 3000:5050 --env-file .env homework_bot
+```
+
 ## Переменные окружения
 
 Часть настроек берётся из переменных окружения. Чтобы их определить, создайте файл `.env` рядом с `homework_bot.py` и запишите туда данные в таком формате: `ПЕРЕМЕННАЯ=значение`.
