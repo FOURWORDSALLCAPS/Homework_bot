@@ -19,9 +19,9 @@ python homework_bot.py
 ## Docker
 
 - Установить [Docker](https://docs.docker.com/engine/install/)
-- Собрать контейнер
+- Собрать образ
 ```
-docker build -t homework_bot
+docker build -t homework_bot .
 ```
  - Запустить контейнер
 ```
